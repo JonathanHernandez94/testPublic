@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\TimeZoneHelper;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,12 +16,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('timezone', 50)->default(config('app.timezone', 'UTC'));
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations.`
      */
     public function down(): void
     {

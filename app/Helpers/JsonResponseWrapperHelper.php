@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Http\JsonResponse;
 
-class JsonResponseWrapper
+class JsonResponseWrapperHelper
 {
     private const SUCCESS_MESSAGE = 'Operation successful';
     private const ERROR_MESSAGE = 'Validation failed';
@@ -33,9 +33,6 @@ class JsonResponseWrapper
                 'code' => self::ERROR_CODE,
                 'message' => self::ERROR_MESSAGE,
                 'details' => $error
-//                'details' => [
-//                    'email' => ['The email field is required.'],
-//                ]
             ],
         ])->setStatusCode($code);
     }

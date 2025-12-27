@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\JsonResponseWrapper;
+use App\Helpers\JsonResponseWrapperHelper;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
@@ -34,7 +34,7 @@ class LoginRequest extends FormRequest
     {
         throw new ValidationException(
             $validator,
-            JsonResponseWrapper::ErrorResponse($validator->errors()->toArray())
+            JsonResponseWrapperHelper::ErrorResponse($validator->errors()->toArray())
         );
 
     }

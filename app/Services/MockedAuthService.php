@@ -6,7 +6,7 @@ use App\Authentication\Contracts\TokenHandlerInterface;
 use App\Models\User;
 use App\Services\Contracts\AuthServiceInterface;
 
-class MockedAuthService implements AuthServiceInterface
+readonly class MockedAuthService implements AuthServiceInterface
 {
     public function __construct(private TokenHandlerInterface $tokenHandler)
     {

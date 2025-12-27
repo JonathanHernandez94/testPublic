@@ -1,0 +1,30 @@
+[
+    {
+        "Organization Admin": {
+            "name": "Jeff Admin",
+            "email": "jeffadmin@admin0.com"
+        },
+        "Project Manager": {
+            "name": "Jimmy PM",
+            "email": "jimmypm@pm0.com"
+        },
+        "Member": {
+            "name": "Carlos Member",
+            "email": "carlosmember@member0.com"
+        }
+    },
+    {
+        "Organization Admin": {
+            "name": "Jeffry Admin",
+            "email": "jeffryadmin@admin1.com"
+        },
+        "Project Manager": {
+            "name": "Jessica PM",
+            "email": "jessicapm@pm1.com"
+        },
+        "Member": {
+            "name": "Jose Member",
+            "email": "josemember@member1.com"
+        }
+    }
+]

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\JsonResponseWrapper;
+use App\Helpers\JsonResponseWrapperHelper;
 use App\Http\Requests\IdentifyRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\LogoutRequest;
@@ -21,7 +21,7 @@ class UserController extends Controller
         $validatedLoginData = $request->validated();
         $user = User::where('email', $validatedLoginData['email'])->first();
 
-        return  JsonResponseWrapper::SuccessResponse([
+        return  JsonResponseWrapperHelper::SuccessResponse([
             'user' => $user,
             'token' => $this->authService->login($user)
         ]);
@@ -33,12 +33,12 @@ class UserController extends Controller
         $userId = $this->authService->identify($validatedIdentifyRequest['token']);
         $user = User::findOrFail($userId);
 
-        return  JsonResponseWrapper::SuccessResponse($user);
+        return  JsonResponseWrapperHelper::SuccessResponse($user);
     }
 
     public function logout(LogoutRequest $request): JsonResponse
     {
         $validatedLogoutRequest = $request->validated();
-        return JsonResponseWrapper::SuccessResponse($this->authService->logout());
+        return JsonResponseWrapperHelper::SuccessResponse($this->authService->logout());
     }
 }
