@@ -43,7 +43,7 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->index('project_id');
-            $table->index(['status', 'priority']);
+            $table->index(['status', 'priority_level']);
         });
     }
 

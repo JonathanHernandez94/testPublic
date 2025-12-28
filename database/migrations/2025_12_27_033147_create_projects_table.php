@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Models\Project\ProjectVisibility;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,15 +14,17 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->unique();
             $table->date('start_date');
             $table->date('end_date');
             $table->unsignedTinyInteger('status');
             $table->mediumText('description');
-            $table->unsignedTinyInteger('visibility');
+            $table->unsignedTinyInteger('visibility')->default(ProjectVisibility::PUBLIC->value);
+            $table->softDeletes();
 
             //Assuming a project can only have 1 PM
             $table->foreignId('project_manager_id')
+                ->nullable()
                 ->constrained('organization_users')
                 ->cascadeOnDelete();
 

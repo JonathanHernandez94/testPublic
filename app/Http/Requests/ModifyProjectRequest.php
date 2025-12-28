@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class LoginRequest extends BaseFormRequest
+class ModifyProjectRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,9 +20,7 @@ class LoginRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|exists:users,email',
-            'password' => ['required'],
+            'id' => 'required|exists:projects,id', //Assuming soft-deleted projects only exists to maintain history
         ];
     }
-
 }

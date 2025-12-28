@@ -27,7 +27,7 @@ readonly class LoginPayloadDTO implements AuthenticationDTOInterface
               * Using the organizations()->first because:
               * Assuming that initially, there is a user already logged into an organization (in the future a 2-step authentication,
               * first step returning all user organizations,
-              * second step creating the token for the selected organization)
+              * second step creating the token for the selected organization) and we can access it from the Guard('api')
               * not now since we are not sending org_id in the login request payload
               */
             role: $user->organizations?->first()->pivot->role?->value ?? null,

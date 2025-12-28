@@ -2,16 +2,30 @@
 
 namespace App\Models;
 
+use App\Enums\Models\Project\ProjectStatus;
 use App\Enums\Models\Project\ProjectVisibility;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
 {
+    use SoftDeletes, HasFactory;
     protected $casts = [
         'visibility' => ProjectVisibility::class,
+        'status' => ProjectStatus::class,
+    ];
+
+    protected $fillable = [
+        'title',
+        'description',
+        'start_date',
+        'end_date',
+        'status',
+        'organization_id'
     ];
 
     public function users(): BelongsToMany

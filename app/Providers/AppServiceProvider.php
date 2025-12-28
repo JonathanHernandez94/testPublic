@@ -7,10 +7,13 @@ use App\Authentication\JwtTokenGenerator;
 use App\Contracts\Authentication\AuthenticationDTOInterface;
 use App\Contracts\Authentication\TokenGeneratorInterface;
 use App\DTO\Authentication\LoginPayloadDTO;
+use App\Models\Project;
+use App\Policies\ProjectPolicy;
 use App\Services\Contracts\AuthServiceInterface;
 use App\Services\MockedAuthService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -33,5 +36,6 @@ class AppServiceProvider extends ServiceProvider
         Auth::extend('jwt', function (Application $app, string $name, array $config) {
             return new JwtGuard(Auth::createUserProvider($config['provider']), $app['request']);
         });
+        Gate::policy(Project::class, ProjectPolicy::class);
     }
 }

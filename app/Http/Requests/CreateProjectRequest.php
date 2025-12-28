@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
-class LoginRequest extends BaseFormRequest
+use Illuminate\Support\Facades\Auth;
+
+class CreateProjectRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,9 +22,16 @@ class LoginRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|exists:users,email',
-            'password' => ['required'],
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'organization_id' => 'required|exists:organizations,id',
         ];
     }
 
+    public function prepareForValidation(): void
+    {
+        $this->merge([
+            'organization_id' => Auth::guard('api')->getOrganizationId(),
+        ]);
+    }
 }

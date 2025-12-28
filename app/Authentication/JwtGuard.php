@@ -36,7 +36,6 @@ class JwtGuard implements Guard
         if($this->hasUser()) {
             return $this->user;
         }
-
         try {
             $token = $this->getTokenFromRequest();
             $payload = (array) JWT::decode($token, new Key(config('jwt.secret'), 'HS256'));

@@ -3,10 +3,8 @@
 namespace App\Policies;
 
 use App\Enums\Authorization\Role;
-use App\Enums\Models\Project\ProjectVisibility;
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 class ProjectPolicy
 {
@@ -24,7 +22,7 @@ class ProjectPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->getRole() === Role::ADMIN->value; //
     }
 
     /**

@@ -3,12 +3,11 @@
 namespace App\Helpers;
 
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class JsonResponseWrapperHelper
 {
     private const SUCCESS_MESSAGE = 'Operation successful';
-    private const ERROR_MESSAGE = 'Validation failed';
-    private const ERROR_CODE = 'VALIDATION_ERROR';
 
     public static function SuccessResponse(mixed $data): JsonResponse
     {
@@ -26,17 +25,15 @@ class JsonResponseWrapperHelper
     }
 
     public static function ErrorResponse(
-        array $error = [],
-        ?string $errorMessage = null,
-        ?string $errorCode = null,
-        int $code = 422
+        int $code,
+        array $error = []
     ): JsonResponse
     {
         return response()->json([
             'success' => false,
             'error' => [
-                'code' => $errorCode ?? self::ERROR_CODE,
-                'message' => $errorMessage ?? self::ERROR_MESSAGE,
+                'code' => strtoupper(Response::$statusTexts[$code]),
+                'message' => Response::$statusTexts[$code],
                 'details' => $error
             ],
         ])->setStatusCode($code);

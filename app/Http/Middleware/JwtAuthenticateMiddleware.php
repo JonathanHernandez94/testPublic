@@ -22,13 +22,8 @@ class JwtAuthenticateMiddleware
         $guard = Auth::guard('api');
 
         if (!$guard->user()) {
-            return JsonResponseWrapperHelper::ErrorResponse(
-                errorMessage:  Response::$statusTexts[Response::HTTP_UNAUTHORIZED],
-                errorCode:  strtoupper(Response::$statusTexts[Response::HTTP_UNAUTHORIZED]),
-                code:   Response::HTTP_UNAUTHORIZED
-            );
+            return JsonResponseWrapperHelper::ErrorResponse(Response::HTTP_UNAUTHORIZED);
         }
-
         $request->attributes->set('orgId', $guard->getOrganizationId());
 
         return $next($request);

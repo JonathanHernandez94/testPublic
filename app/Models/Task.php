@@ -2,11 +2,18 @@
 
 namespace App\Models;
 
+use App\Enums\Models\Task\TaskPriority;
+use App\Enums\Models\Task\TaskStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
+    protected $casts = [
+        'status' => TaskStatus::class,
+        'priority' => TaskPriority::class,
+    ];
+
     /**
      * Assuming a task belongs to only one 1 project
      */

@@ -68,7 +68,7 @@ class User extends Authenticatable
     public function getRole(?Organization $organization = null): ?int
     {
         return $this->organizations()
-            ->where('id', $organization?->id ?? Auth::guard('api')->getOrganizationId())
+            ->where('organizations.id', $organization?->id ?? Auth::guard('api')->getOrganizationId())
             ->first()
             ?->pivot
             ?->role
@@ -78,14 +78,14 @@ class User extends Authenticatable
     public function isInOrganization(Organization $organization): bool
     {
         return $this->organizations()
-            ->where('id', $organization->id)
+            ->where('organizations.id', $organization->id)
             ->exists();
     }
 
     public function isMemberOfProject(Project $project): bool
     {
         return $this->projects()
-            ->where('id', $project->id)
+            ->where('organizations.id', $project->id)
             ->exists();
     }
 }
