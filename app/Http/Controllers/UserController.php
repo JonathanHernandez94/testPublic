@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\Authentication\LoginPayloadDTO;
 use App\Helpers\JsonResponseWrapperHelper;
 use App\Http\Requests\IdentifyRequest;
 use App\Http\Requests\LoginRequest;
@@ -9,6 +10,7 @@ use App\Http\Requests\LogoutRequest;
 use App\Models\User;
 use App\Services\Contracts\AuthServiceInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -19,26 +21,25 @@ class UserController extends Controller
     public function getUserAuthData(LoginRequest $request): JsonResponse
     {
         $validatedLoginData = $request->validated();
-        $user = User::where('email', $validatedLoginData['email'])->first();
+        $user = User::where('email', $validatedLoginData['email'])
+            ->with(['organizations' => function($query) {
+                $query->limit(1);
+            }])
+            ->first();
 
         return  JsonResponseWrapperHelper::SuccessResponse([
             'user' => $user,
-            'token' => $this->authService->login($user)
+            'token' => $this->authService->login(LoginPayloadDTO::fromUser($user))
         ]);
     }
 
     public function getUserByToken(IdentifyRequest $request): JsonResponse
     {
-        $validatedIdentifyRequest = $request->validated();
-        $userId = $this->authService->identify($validatedIdentifyRequest['token']);
-        $user = User::findOrFail($userId);
-
-        return  JsonResponseWrapperHelper::SuccessResponse($user);
+        return JsonResponseWrapperHelper::SuccessResponse(Auth::guard('api')->user());
     }
 
     public function logout(LogoutRequest $request): JsonResponse
     {
-        $validatedLogoutRequest = $request->validated();
         return JsonResponseWrapperHelper::SuccessResponse($this->authService->logout());
     }
 }

@@ -2,11 +2,10 @@
 
 namespace App\Services\Contracts;
 
-use App\Models\User;
+use App\DTO\Authentication\Contracts\AuthenticationDTOInterface;
 
 interface AuthServiceInterface
 {
-    public function login(User $user): string;
+    public function login(AuthenticationDTOInterface $loginPayloadDTO): string;
     public function logout(): bool;
-    public function identify(string $token): int;
 }

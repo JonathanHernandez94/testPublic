@@ -22,7 +22,7 @@ class IdentifyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'token' => 'required|string|regex:/^[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+$/',
+            // Let's assume the JWT is being passed in the Header
         ];
     }
 }

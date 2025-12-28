@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Helpers\JsonResponseWrapperHelper;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
@@ -26,7 +27,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => 'required|email|exists:users,email',
-            'password' => 'required|password',
+            'password' => ['required'],
         ];
     }
 

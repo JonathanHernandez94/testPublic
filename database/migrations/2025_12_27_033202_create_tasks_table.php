@@ -20,6 +20,11 @@ return new class extends Migration
             $table->dateTimeTz('due_date')->nullable();
             $table->timestamps();
 
+            //Assuming a task belongs to only one 1 project
+            $table->foreignId('project_id')
+                ->constrained('projects')
+                ->cascadeOnDelete();
+
             //Assuming a task can be unassigned
             $table->foreignId('assignee')
                 ->nullable()
@@ -36,6 +41,9 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('organization_users')
                 ->nullOnDelete();
+
+            $table->index('project_id');
+            $table->index(['status', 'priority']);
         });
     }
 

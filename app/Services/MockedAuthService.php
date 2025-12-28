@@ -2,19 +2,22 @@
 
 namespace App\Services;
 
-use App\Authentication\Contracts\TokenHandlerInterface;
+use App\Authentication\Contracts\TokenGeneratorInterface;
+use App\DTO\Authentication\Contracts\AuthenticationDTOInterface;
 use App\Models\User;
 use App\Services\Contracts\AuthServiceInterface;
 
 readonly class MockedAuthService implements AuthServiceInterface
 {
-    public function __construct(private TokenHandlerInterface $tokenHandler)
+    public function __construct(
+        private TokenGeneratorInterface $tokenGenerator,
+    )
     {
     }
 
-    public function login(User $user): string
+    public function login(AuthenticationDTOInterface $loginPayloadDTO): string
     {
-        return $this->tokenHandler->generateToken($user);
+        return $this->tokenGenerator->generate($loginPayloadDTO);
     }
 
     /**
@@ -25,8 +28,4 @@ readonly class MockedAuthService implements AuthServiceInterface
         return true;
     }
 
-    public function identify(string $token): int
-    {
-        return $this->tokenHandler->decodeToken($token)['id'];
-    }
 }

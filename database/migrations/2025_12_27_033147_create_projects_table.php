@@ -24,6 +24,11 @@ return new class extends Migration
                 ->constrained('organization_users')
                 ->cascadeOnDelete();
 
+            //Assuming a project belongs to only one 1 organization
+            $table->foreignId('organization_id')
+                ->constrained('organizations')
+                ->cascadeOnDelete();
+
             $table->integer('associated_task_count')->default(0);
             $table->timestamps();
         });

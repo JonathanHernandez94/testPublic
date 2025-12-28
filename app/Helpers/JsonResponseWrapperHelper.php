@@ -25,13 +25,18 @@ class JsonResponseWrapperHelper
         ]);
     }
 
-    public static function ErrorResponse(array $error, int $code = 422): JsonResponse
+    public static function ErrorResponse(
+        array $error = [],
+        ?string $errorMessage = null,
+        ?string $errorCode = null,
+        int $code = 422
+    ): JsonResponse
     {
         return response()->json([
             'success' => false,
             'error' => [
-                'code' => self::ERROR_CODE,
-                'message' => self::ERROR_MESSAGE,
+                'code' => $errorCode ?? self::ERROR_CODE,
+                'message' => $errorMessage ?? self::ERROR_MESSAGE,
                 'details' => $error
             ],
         ])->setStatusCode($code);
