@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Authorization;
+namespace App\Enums\Authorization;
 
 enum Role: int
 {

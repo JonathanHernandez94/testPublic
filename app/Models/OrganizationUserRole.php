@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Authorization\Role;
+use App\Enums\Authorization\Role;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class OrganizationUserRole extends Pivot

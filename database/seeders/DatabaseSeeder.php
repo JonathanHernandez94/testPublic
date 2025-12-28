@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Authorization\Role;
+use App\Enums\Authorization\Role;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;

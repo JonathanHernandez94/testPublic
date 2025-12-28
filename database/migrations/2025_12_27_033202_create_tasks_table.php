@@ -26,20 +26,20 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             //Assuming a task can be unassigned
-            $table->foreignId('assignee')
+            $table->foreignId('assignee_id')
                 ->nullable()
-                ->constrained('organization_users')
+                ->constrained('users')
                 ->nullOnDelete();
 
             //Assuming a task must persist even if the creator doesn't exist in the system anymore, set creator to null
             $table->foreignId('created_by')
                 ->nullable()
-                ->constrained('organization_users')
+                ->constrained('users')
                 ->nullOnDelete();
 
             $table->foreignId('updated_by')
                 ->nullable()
-                ->constrained('organization_users')
+                ->constrained('users')
                 ->nullOnDelete();
 
             $table->index('project_id');

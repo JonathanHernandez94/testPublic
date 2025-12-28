@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Authentication\Contracts\TokenGeneratorInterface;
 use App\Authentication\JwtGuard;
 use App\Authentication\JwtTokenGenerator;
-use App\DTO\Authentication\Contracts\AuthenticationDTOInterface;
+use App\Contracts\Authentication\AuthenticationDTOInterface;
+use App\Contracts\Authentication\TokenGeneratorInterface;
 use App\DTO\Authentication\LoginPayloadDTO;
 use App\Services\Contracts\AuthServiceInterface;
 use App\Services\MockedAuthService;

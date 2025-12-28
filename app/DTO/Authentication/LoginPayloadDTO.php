@@ -2,8 +2,7 @@
 
 namespace App\DTO\Authentication;
 
-use App\DTO\Authentication\Contracts\AuthenticationDTOInterface;
-use App\Models\Organization;
+use App\Contracts\Authentication\AuthenticationDTOInterface;
 use App\Models\User;
 
 readonly class LoginPayloadDTO implements AuthenticationDTOInterface

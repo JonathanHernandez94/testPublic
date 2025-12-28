@@ -2,14 +2,22 @@
 
 namespace App\Policies;
 
-use App\Authorization\Role;
+use App\Enums\Authorization\Role;
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Auth;
 
 class TaskPolicy
 {
+    private function hasAccessToModify(User $user, Task $task): bool
+    {
+        return match ($user->getRole()) {
+            Role::ADMIN->value => true,
+            Role::PM->value => $user->isMemberOfProject($task->project),
+            Role::MEMBER->value => $task->isAssignee($user),
+            default => false
+        };
+    }
+
     /**
      * Determine whether the user can view any models.
      */
@@ -23,18 +31,7 @@ class TaskPolicy
      */
     public function view(User $user, Task $task): bool
     {
-        $isProjectMember = $task
-
-        $role = $user->organizations()
-            ->where('id', Auth::guard('api')->getOrganizationId())
-            ->pivot
-            ->role
-            ->value;
-
-        return match ($role) {
-            Role::ADMIN->value => true,
-            Role::PM->value, Role::MEMBER->value => $isProjectMember
-        };
+        return $this->hasAccessToModify($user, $task);
     }
 
     /**
@@ -42,7 +39,10 @@ class TaskPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return match ($user->getRole()) {
+            Role::ADMIN->value, Role::PM->value => true,
+            default => false
+        };
     }
 
     /**
@@ -50,7 +50,7 @@ class TaskPolicy
      */
     public function update(User $user, Task $task): bool
     {
-        return false;
+        return $this->hasAccessToModify($user, $task);
     }
 
     /**
@@ -58,7 +58,11 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task): bool
     {
-        return false;
+        return match ($user->getRole()) {
+            Role::ADMIN->value => true,
+            Role::PM->value => $user->isMemberOfProject($task->project),
+            default => false
+        };
     }
 
     /**

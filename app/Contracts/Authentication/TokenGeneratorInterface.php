@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Authentication\Contracts;
-
-use App\DTO\Authentication\Contracts\AuthenticationDTOInterface;
+namespace App\Contracts\Authentication;
 
 interface TokenGeneratorInterface
 {

@@ -2,15 +2,23 @@
 
 namespace App\Policies;
 
-use App\Authentication\JwtGuard;
-use App\Authorization\Role;
+use App\Enums\Authorization\Role;
+use App\Enums\Models\Project\ProjectVisibility;
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 
 class ProjectPolicy
 {
+    private function hasFullAccessToModify(User $user, Project $project): bool
+    {
+        return match ($user->getRole()) {
+            Role::ADMIN->value => true,
+            Role::PM->value => $user->isMemberOfProject($project), // Assuming only one PM per project
+            default => false
+        };
+    }
+
     /**
      * Determine whether the user can view any models.
      */
@@ -24,18 +32,10 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project): bool
     {
-        $isProjectMember = $project->users()->where('id', $user->id)->count() > 0;
-
-        $role = $user->organizations()
-            ->where('id', Auth::guard('api')->getOrganizationId())
-            ->pivot
-            ->role
-            ->value;
-
-        return match ($role) {
-            Role::ADMIN->value => true,
-            Role::PM->value, Role::MEMBER->value => $isProjectMember
-        };
+        if ($project->isPublic() || $user->isMemberOfProject($project)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -43,15 +43,9 @@ class ProjectPolicy
      */
     public function create(User $user): bool
     {
-        $role = $user->organizations()
-            ->where('id', Auth::guard('api')->getOrganizationId())
-            ->pivot
-            ->role
-            ->value;
-
-        return match ($role) {
+        return match ($user->getRole()) {
             Role::ADMIN->value, Role::PM->value => true,
-            Role::MEMBER->value => false
+            default => false
         };
     }
 
@@ -60,19 +54,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project): bool
     {
-        $isProjectMember = $project->users()->where('id', $user->id)->count() > 0;
-
-        $role = $user->organizations()
-            ->where('id', Auth::guard('api')->getOrganizationId())
-            ->pivot
-            ->role
-            ->value;
-
-        return match ($role) {
-            Role::ADMIN->value => true,
-            Role::PM->value => $isProjectMember, // Assuming only one PM per project
-            Role::MEMBER->value => false
-        };
+        return $this->hasFullAccessToModify($user, $project);
     }
 
     /**
@@ -80,19 +62,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project): bool
     {
-        $isProjectMember = $project->users()->where('id', $user->id)->count() > 0;
-
-        $role = $user->organizations()
-            ->where('id', Auth::guard('api')->getOrganizationId())
-            ->pivot
-            ->role
-            ->value;
-
-        return match ($role) {
-            Role::ADMIN->value => true,
-            Role::PM->value => $isProjectMember, // Assuming only one PM per project
-            Role::MEMBER->value => false
-        };
+        return $this->hasFullAccessToModify($user, $project);
     }
 
     /**

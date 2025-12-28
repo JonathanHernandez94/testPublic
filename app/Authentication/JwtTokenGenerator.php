@@ -2,8 +2,8 @@
 
 namespace App\Authentication;
 
-use App\Authentication\Contracts\TokenGeneratorInterface;
-use App\DTO\Authentication\Contracts\AuthenticationDTOInterface;
+use App\Contracts\Authentication\AuthenticationDTOInterface;
+use App\Contracts\Authentication\TokenGeneratorInterface;
 use Firebase\JWT\JWT;
 
 class JwtTokenGenerator implements TokenGeneratorInterface

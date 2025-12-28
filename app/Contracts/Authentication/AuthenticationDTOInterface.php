@@ -1,8 +1,7 @@
 <?php
 
-namespace App\DTO\Authentication\Contracts;
+namespace App\Contracts\Authentication;
 
-use App\Models\Organization;
 use App\Models\User;
 
 interface AuthenticationDTOInterface

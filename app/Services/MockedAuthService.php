@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use App\Authentication\Contracts\TokenGeneratorInterface;
-use App\DTO\Authentication\Contracts\AuthenticationDTOInterface;
-use App\Models\User;
+use App\Contracts\Authentication\AuthenticationDTOInterface;
+use App\Contracts\Authentication\TokenGeneratorInterface;
 use App\Services\Contracts\AuthServiceInterface;
 
 readonly class MockedAuthService implements AuthServiceInterface

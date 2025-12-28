@@ -3,17 +3,15 @@
 namespace App\Policies;
 
 use App\Enums\Authorization\Role;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Auth;
 
-class UserPolicy
+class OrganizationPolicy
 {
-    private function isAdminWithinSameOrganization(User $user, User $model): bool
+    private function isAdminOf(User $user, Organization $organization): bool
     {
-        return $user->getRole() === Role::ADMIN->value
-            && $model->isInOrganization(Auth::guard('api')
-                ->getOrganizationId());
+        return $user->getRole($organization) === Role::ADMIN->value;
     }
 
     /**
@@ -27,9 +25,9 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user, Organization $organization): bool
     {
-        return $this->isAdminWithinSameOrganization($user, $model);
+        return $user->isInOrganization($organization);
     }
 
     /**
@@ -37,29 +35,29 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->getRole() === Role::ADMIN->value;
+        return false;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $model): bool
+    public function update(User $user, Organization $organization): bool
     {
-        return $this->isAdminWithinSameOrganization($user, $model);
+        return $this->isAdminOf($user, $organization);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, Organization $organization): bool
     {
-        return $this->isAdminWithinSameOrganization($user, $model);
+        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, User $model): bool
+    public function restore(User $user, Organization $organization): bool
     {
         return false;
     }
@@ -67,7 +65,7 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, Organization $organization): bool
     {
         return false;
     }

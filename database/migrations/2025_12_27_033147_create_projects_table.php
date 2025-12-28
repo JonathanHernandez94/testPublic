@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->unsignedTinyInteger('status');
             $table->mediumText('description');
+            $table->unsignedTinyInteger('visibility');
 
             //Assuming a project can only have 1 PM
             $table->foreignId('project_manager_id')
