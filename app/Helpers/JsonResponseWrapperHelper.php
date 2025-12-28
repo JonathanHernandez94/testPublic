@@ -16,10 +16,10 @@ class JsonResponseWrapperHelper
             'data' => $data ,
             'message' => self::SUCCESS_MESSAGE,
             'meta' => [
-                'page' => 1,
-                'per_page' => 10,
-                'total' => 100,
-                'total_pages' => 5
+                'page' => 'Not Implemented',
+                'per_page' => 'Not Implemented',
+                'total' => 'Not Implemented',
+                'total_pages' => 'Not Implemented'
             ]
         ]);
     }
